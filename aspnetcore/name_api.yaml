@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: name-api
+  template:
+    metadata:
+      labels:
+        app: name-api
+    spec:
+      containers:
+      - name: name-api
+        env:
+        - name: HOSTNAME_COMMAND
+          valueFrom:
+            fieldRef: {fieldPath: metadata.name}
+        image: nanwanwang/name_api:v1.1
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: name-api
+spec:
+  selector:
+    app: name-api
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+
+
