@@ -8,24 +8,20 @@ spec:
     emptyDir: {}
   initContainers:
   - name: install
-    image:  busybox
+    image: busybox
     command:
     - wget
     - "-O"
     - "/work-dir/index.html"
     - http://www.baidu.com
     volumeMounts:
-      - name: workdir
-        mountPath: "/work-dir"
+    - mountPath: "/work-dir"
+      name: workdir 
   containers:
   - name: nginx
     image: nginx
     ports:
     - containerPort: 80
     volumeMounts:
-    - name: workdir
-      mountPath: /usr/share/nginx/html
-      
-
-  
-        
+    - mountPath: "/usr/share/nginx/html"
+      name: workdir
