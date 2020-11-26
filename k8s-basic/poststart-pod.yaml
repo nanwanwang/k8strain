@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: poststart-pod
+  namespace: default
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/sh","-c","echo hello from poststart > /usr/share/poststart"]
+
