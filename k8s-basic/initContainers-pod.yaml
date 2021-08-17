@@ -12,10 +12,10 @@ spec:
     command:
     - wget
     - "-O"
-    - "/work-dir/index.html"
+    - /work-dir/index.html
     - http://www.baidu.com
     volumeMounts:
-    - mountPath: "/work-dir"
+    - mountPath: /work-dir
       name: workdir 
   containers:
   - name: nginx
@@ -23,5 +23,5 @@ spec:
     ports:
     - containerPort: 80
     volumeMounts:
-    - mountPath: "/usr/share/nginx/html"
+    - mountPath: /usr/share/nginx/html
       name: workdir
