@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+  namespace: default
+spec:
+  replicas: 2  # 指定期望运行的Pod数量
+  selector:    # Label Selector ,必须匹配Pod模板中的标签
+    matchLabels:
+      app: nginx
+  template:  # Pod模板
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

@@ -1,13 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
-  namespace: default
+  name: hpa-demo
 spec:
   selector:
-    matchLabels: 
-      app: nginx #要与template里面的labels保持一致
-  replicas: 2
+    matchLabels:
+      app: nginx
   template:
     metadata:
       labels:
@@ -18,3 +16,7 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 50m
