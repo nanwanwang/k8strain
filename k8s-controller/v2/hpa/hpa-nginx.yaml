@@ -15,8 +15,9 @@ spec:
       - name: nginx
         image: nginx
         ports:
-        - containerPort: 80
+        - name:  http
+          containerPort: 80
         resources:
           requests:
-            memory: 50Mi
-            cpu: 50m
+            cpu: 30m
+            memory: 30Mi
