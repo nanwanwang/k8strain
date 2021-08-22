@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-cm-pod
+  namespace: default
+spec:
+  containers:
+  - name: testcm1
+    image: busybox
+    command: ['/bin/sh','-c','env']
+    env:
+    - name: DB_HOST
+      valueFrom:
+        configMapKeyRef:
+          key: db.host
+          name: mysql
+    - name: DB_PORT
+      valueFrom:
+        configMapKeyRef:
+          key: db.port
+          name: mysql
