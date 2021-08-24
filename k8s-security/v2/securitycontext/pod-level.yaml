@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-pod-level-demo
+  namespace: default
+spec:
+  volumes:
+  - name: sc-ctx-vol
+    emptyDir: {}
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+  - name: sc-pod-level
+    image: busybox
+    command: ['/bin/sh','-c','sleep 60m']
+    volumeMounts:
+    - name: sc-ctx-vol
+      mountPath: /pod/demo
