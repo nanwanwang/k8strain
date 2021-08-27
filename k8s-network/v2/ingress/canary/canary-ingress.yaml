@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: canary
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/canary: "true"  #打开金丝雀
+    nginx.ingress.kubernetes.io/canary-weight: "30"  # 基于权重
+    nginx.ingress.kubernetes.io/canary-by-cookie: "users_from_Beijing"  # 基于 cookie
+    # nginx.ingress.kubernetes.io/canary-by-header: canary #基于header的流量
+    # nginx.ingress.kubernetes.io/canary-by-header-value: user-value
+spec:
+  rules:
+  - host: echo.demon.com
+    http:
+      paths:
+      - backend:
+          serviceName: canary
+          servicePort: 80
