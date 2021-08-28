@@ -11,9 +11,14 @@ metadata:
     # nginx.ingress.kubernetes.io/canary-by-header-value: user-value
 spec:
   rules:
-  - host: echo.demon.com
+  - host: echo.demonwang.com
     http:
       paths:
-      - backend:
+      - path: /
+        backend:
           serviceName: canary
           servicePort: 80
+  tls:
+  - hosts:
+    - "*.demonwang.com"
+    secretName: demonwang-com-tls

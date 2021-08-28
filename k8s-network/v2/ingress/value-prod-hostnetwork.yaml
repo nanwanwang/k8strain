@@ -6,8 +6,8 @@ controller:
     tag: "v0.41.2"
     digest: 
   containerPort:
-   http: 32080
-   https: 32443
+   http: 80 #没有用应该可以设置为默认值
+   https: 443 #没有用应该可以设置为默认值
   dnsPolicy: ClusterFirstWithHostNet
 
   hostNetwork: true
@@ -15,8 +15,8 @@ controller:
   hostPort:
    enabled: true
    ports:
-     http: 32080
-     https: 32443
+     http: 80    #没有用应该可以设置为默认值
+     https: 443  #没有用应该可以设置为默认值
 
   publishService:  # hostNetwork 模式下设置为false，通过节点IP地址上报ingress status数据
     enabled: false

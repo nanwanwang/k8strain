@@ -1,0 +1,19 @@
+
+
+1.创建poddns webhook
+helm install --namespace cert-manager  cert-manager-webhook-dnspod ./deploy/cert-manager-webhook-dnspod \
+    --set groupName=acme.yourcompany.com \
+    --set secrets.apiID=254889,secrets.apiToken=49743306862be524cbd705bb4225a4ec \
+    --set clusterIssuer.enabled=true,clusterIssuer.email=nanwanwang@hotmail.com
+
+---
+2.创建 secret
+kubectl create secret generic dnspod-secret --from-literal=access-key=AKIDay6yZtwkHYZJn1ye4D5f03pKYVBaiZ9S --from-literal=secret-key=4sQhhQt4yby4tRjkTv61f3A1bu0qUszp -n cert-manager
+
+
+---
+3. 使用clusterissuer创建 certificate  clusterissuer 在helm时候已经创建   
+
+
+token  地址  https://console.dnspod.cn/account/token/token
+api key  地址 https://console.dnspod.cn/account/token/apikey 

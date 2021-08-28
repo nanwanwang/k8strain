@@ -1,0 +1,9 @@
+groupName: demonwang.com # 写一个标识 group 的名称，可以任意写
+
+secrets: # 将前面生成的 id 和 token 粘贴到下面
+  apiID: "254889"
+  apiToken: "49743306862be524cbd"
+
+clusterIssuer:
+  enabled: true # 自动创建出一个 ClusterIssuer
+  email: nanwanwang@hotmail.com # 填写你的邮箱地址
