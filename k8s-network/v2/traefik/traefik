@@ -1,0 +1,5 @@
+helm install -n kube-system ./traefik/ -f  value-prod.yaml 
+
+dashboard
+
+
