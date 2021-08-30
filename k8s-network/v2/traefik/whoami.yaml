@@ -56,12 +56,16 @@ metadata:
   name: ingressroutetls
 spec:
   entryPoints:
-    - websecure
+  - websecure
   routes:
-  - match: Host(`who.demon.com`) && PathPrefix(`/tls`)
+  - match: Host(`who.demonwang.com`) && PathPrefix(`/tls`)
     kind: Rule
     services:
     - name: whoami
       port: 80
+  # tls:
+  #   secretName: who-tls
   tls:
-    secretName: who-tls
+    certResolver: dnspod  #dns 01
+    domains:
+    - main: "*.demonwang.com"

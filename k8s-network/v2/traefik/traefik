@@ -3,3 +3,6 @@ helm install -n kube-system ./traefik/ -f  value-prod.yaml
 dashboard
 
 
+更新 
+helm upgrade --install traefik -n kube-system  ./traefik/ -f value-prod.yaml
+

@@ -29,7 +29,7 @@ service:  # 使用 hostport 模式就不需要Service了
 # https://docs.traefik.io/observability/logs/
 logs:
   general:
-    level: DEBUG
+    level: ERROR
 
 tolerations:   # kubeadm 安装的集群默认情况下master是有污点，需要容忍这个污点才可以部署
 - key: "node-role.kubernetes.io/master"
@@ -38,3 +38,35 @@ tolerations:   # kubeadm 安装的集群默认情况下master是有污点，需�
 
 nodeSelector:   # 固定到master1节点（该节点才可以访问外网）
   kubernetes.io/hostname: "master"
+
+
+# values-prod.yaml
+additionalArguments:
+# 使用 dns 验证方式
+- --certificatesResolvers.dnspod.acme.dnsChallenge.provider=dnspod 
+# 先使用staging环境进行验证，验证成功后再使用移除下面一行的配置
+# - --certificatesResolvers.ali.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+# 邮箱配置
+- --certificatesResolvers.dnspod.acme.email=nanwanwang@hotmail.com
+# 保存 ACME 证书的位置
+- --certificatesResolvers.dnspod.acme.storage=/data/acme.json
+
+envFrom: 
+- secretRef:
+    name: traefik-dnspod-secret
+    # ALICLOUD_ACCESS_KEY
+    # ALICLOUD_SECRET_KEY
+    # ALICLOUD_REGION_ID
+
+persistence:
+  enabled: true  # 开启持久化
+  accessMode: ReadWriteOnce
+  size: 128Mi
+  path: /data
+
+# 由于上面持久化了ACME的数据，需要重新配置下面的安全上下文
+securityContext:
+  readOnlyRootFilesystem: false
+  runAsGroup: 0
+  runAsUser: 0
+  runAsNonRoot: false
