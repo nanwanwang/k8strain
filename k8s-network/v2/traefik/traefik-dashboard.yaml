@@ -1,4 +1,15 @@
 apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-https
+  namespace: kube-system
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard
@@ -12,3 +23,24 @@ spec:
     services:
     - name: api@internal
       kind: TraefikService  # 引用另外的 Traefik Service
+    middlewares:
+    - name: redirect-https
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard-tls
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`traefik.demonwang.com`)  # 指定域名
+    kind: Rule
+    services:
+    - name: api@internal
+      kind: TraefikService  # 引用另外的 Traefik Service
+  tls:
+    certResolver: dnspod
+    domains:
+    - main: "*.demonwang.com"
