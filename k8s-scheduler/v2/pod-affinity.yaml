@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  pod-affinity-deploy
+  labels:
+    app: pod-affinity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pod-affinity
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  pod-affinity
+    spec:
+      containers:
+      - image:  nginx
+        name:  pod-affinity
+        ports:
+        - containerPort:  80
+          name:  ngport
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:  #硬策略
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values: ["node-selector"]
+            topologyKey:  kubernetes.io/hostname  #以hostname为拓扑域
+# 调度到具有 app=node-selector 所在的拓扑域中
+            
+       

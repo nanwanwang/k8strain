@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  node-affinity-deploy
+  labels:
+    app: node-affinity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-affinity
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  node-affinity
+    spec:
+      containers:
+      - image:  nginx
+        name:  node-affinity
+        ports:
+        - containerPort:  80
+          name:  ngport
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values: ["master"]
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: com
+                operator: In
+                values: ["demon"]
+
+       

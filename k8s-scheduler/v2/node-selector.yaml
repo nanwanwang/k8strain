@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-selector-demo
+  namespace: default
+  labels:
+    app: node-selector
+spec:
+  containers:
+  - image: busybox
+    name: selector-demo
+    command:
+    - sleep
+    - "3600"
+  nodeSelector:
+    com: demon
