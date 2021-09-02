@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-hostpath  #pv是全局范围内的,没有namespace
+  labels:
+    type: local
+spec:
+  hostPath:
+    path: /data/k8s/test/hostpath
+  capacity:
+    storage: 20Mi
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: manual  
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-hostpath
+  namespace: default  #pvc 是有namespace 限制
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-hostpath
+  labels:
+    app: pod-hostpath
+spec:
+  volumes:
+  - name: html
+    persistentVolumeClaim:
+      claimName: pvc-hostpath
+  nodeSelector:
+    kubernetes.io/hostname: node01
+  containers:
+  - name: ng
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
