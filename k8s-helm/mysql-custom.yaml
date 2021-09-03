@@ -1,0 +1,8 @@
+mysqlRootPassword: rootPassw0rd
+mysqlDatabase: testhelm
+persistence:
+  enabled: false
+
+extraEnvVars: |
+  - name: EXTRA_VAR
+    value: "extra"
