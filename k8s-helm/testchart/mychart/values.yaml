@@ -10,3 +10,11 @@ pizzaToppings:
   - cheese
   - peppers
   - onions
+
+#父级会覆盖子chart
+mysubchart:
+  like: ice cream
+
+
+global:
+  salad: caesar

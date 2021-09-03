@@ -26,3 +26,8 @@ data:
   {{- range $key,$val := .Values.favorite}}
   {{ $key }} : {{ $val | quote }}
   {{- end}}  
+  {{- range tuple "config1.toml" "config2.toml" "config3.toml" }}
+  {{ . }}: |-
+    {{ $.Files.Get .}}  
+  {{- end}}
+  salad: {{ .Values.global.salad }}
