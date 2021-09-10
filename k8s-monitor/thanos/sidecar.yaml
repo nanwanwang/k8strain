@@ -30,6 +30,9 @@ spec:
             name: prometheus-rules
         - name: prometheus-config-shared
           emptyDir: {}
+        - name: object-storage-config
+          secret:
+            secretName: thanos-objectstorage
       containers:
         - name: prometheus
           image: prom/prometheus:v2.14.0
@@ -71,6 +74,7 @@ spec:
             - --reloader.config-file=/etc/prometheus/prometheus.yaml.tmpl
             - --reloader.config-envsubst-file=/etc/prometheus-shared/prometheus.yaml
             - --reloader.rule-dir=/etc/prometheus/rules/
+            - --objstore.config-file=/etc/secret/thanos.yaml
           ports:
             - name: http-sidecar
               containerPort: 10902
@@ -97,6 +101,8 @@ spec:
               mountPath: /etc/prometheus/rules
             - name: data
               mountPath: "/prometheus"
+            - name: object-storage-config
+              mountPath: /etc/secret
   volumeClaimTemplates: # 由于prometheus每2h生成一个TSDB数据块，所以还是需要保存本地的数据
     - metadata:
         name: data

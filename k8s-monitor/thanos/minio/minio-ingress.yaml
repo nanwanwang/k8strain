@@ -1,0 +1,61 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: minio-https
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`minio.demonwang.com`)
+    services:
+    - kind: Service
+      name: minio
+      port: 9001
+  tls:
+    certResolver: dnspod
+    domains:
+    - main: "*.demonwang.com"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+spec:
+  ports:
+  - port: 9000
+    name: api
+    targetPort: 9000
+    protocol: TCP
+  - port: 9001
+    name: console
+    targetPort: 9001
+    protocol: TCP
+  selector:
+    app: minio
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: minio-redirect-https
+spec:
+  redirectScheme:
+    scheme: https
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: minio
+spec:
+  entryPoints:
+  - web
+  routes:
+  - kind: Rule
+    match: Host(`minio.demonwang.com`)
+    services:
+    - kind: Service
+      name: minio
+      port: 9001
+    middlewares:
+    - name: minio-redirect-https
