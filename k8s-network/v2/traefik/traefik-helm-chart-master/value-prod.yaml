@@ -22,6 +22,9 @@ ports:
   mongo:
     port: 27017
     hostPort: 27017
+  gitlab:  #添加gitlab端口 需要测试
+    port: 30022
+    hostPort: 30022
 
 # Options for the main traefik service, where the entrypoints traffic comes
 # from.
