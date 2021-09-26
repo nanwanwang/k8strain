@@ -1,0 +1,48 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-hostpath
+  annotations:
+    openebs.io/cas-type: local
+    cas.openebs.io/config: |
+      - name: StorageType
+        value: hostpath
+      - name: BasePath
+        value: /var/local-hostpath
+provisioner: openebs.io/local
+reclaimPolicy: Delete 
+volumeBindingMode: WaitForFirstConsumer
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: local-hostpath-pvc
+spec:
+  storageClassName: local-hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100M
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-local-hostpath-pod
+spec:
+  volumes:
+  - name: local-storage
+    persistentVolumeClaim:
+      claimName: local-hostpath-pvc
+  containers:
+  - name: hello-container
+    image: busybox
+    command:
+       - sh
+       - -c
+       - 'while true; do echo "`date` [`hostname`] Hello from OpenEBS Local PV." >> /mnt/store/greet.txt; sleep $(($RANDOM % 5 + 300)); done'
+    volumeMounts:
+    - mountPath: /mnt/store
+      name: local-storage
