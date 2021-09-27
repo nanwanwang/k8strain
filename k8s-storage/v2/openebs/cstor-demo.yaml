@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cstor-demo
+  labels:
+    app: cstor-demo
+spec:
+  volumes:
+  - name: html
+    persistentVolumeClaim:
+      claimName: cstor-demo-pvc
+  containers:
+  - name: ng
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html

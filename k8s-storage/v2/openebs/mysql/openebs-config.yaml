@@ -1,0 +1,31 @@
+
+#Use the following YAMLs to create a cStor Storage Pool.
+# and associated storage class.
+apiVersion: openebs.io/v1alpha1
+kind: StoragePoolClaim
+metadata:
+  name: cstor-disk
+spec:
+  name: cstor-disk
+  type: disk
+  poolSpec:
+    poolType: striped
+  # NOTE - Appropriate disks need to be fetched using `kubectl get bd -n openebs`
+  #
+  # `Block Devices` is a custom resource supported by OpenEBS with `node-disk-manager`
+  # as the disk operator
+# Replace the following with actual disk CRs from your cluster `kubectl get bd  -n openebs`
+# Uncomment the below lines after updating the actual disk names.
+  blockdevices:
+    blockDeviceList:
+    - blockdevice-8712bf9f5997e7484cee3799d780e2ad
+    - blockdevice-981596ceeb4c8826d0c6d4789a8e22b1
+    - blockdevice-9a4d71626e8701eaf49cb7c989b8f56a
+    - blockdevice-b2855148f801fd233df390e6287d8f4a
+    - blockdevice-bb2eaf35d235bd290ffb0d30842b41fc
+# Replace the following with actual disk CRs from your cluster from `kubectl get bd  -n openebs`
+#   - blockdevice-69cdfd958dcce3025ed1ff02b936d9b4
+#   - blockdevice-891ad1b581591ae6b54a36b5526550a2
+#   - blockdevice-ceaab442d802ca6aae20c36d20859a0b
+  
+---
