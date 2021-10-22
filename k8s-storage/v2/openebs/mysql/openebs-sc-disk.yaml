@@ -1,15 +1,12 @@
-
-apiVersion: storage.k8s.io/v1
 kind: StorageClass
+apiVersion: storage.k8s.io/v1
 metadata:
-  name: openebs-cstor-disk
-  annotations:
-    openebs.io/cas-type: cstor
-    cas.openebs.io/config: |
-      - name: StoragePoolClaim
-        value: "cstor-disk"
-      - name: ReplicaCount
-        value: "3"
-provisioner: openebs.io/provisioner-iscsi
-reclaimPolicy: Delete
----
+  name: cstor-csi-disk
+provisioner: cstor.csi.openebs.io
+allowVolumeExpansion: true
+parameters:
+  cas-type: cstor
+  # cstorPoolCluster should have the name of the CSPC 
+  cstorPoolCluster: cstor-disk-pool
+  # replicaCount should be <= no. of CSPI created in the selected CSPC
+  replicaCount: "2"

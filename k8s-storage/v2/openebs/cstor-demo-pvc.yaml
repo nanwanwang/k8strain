@@ -8,4 +8,4 @@ spec:
   resources:
     requests:
       storage: 10Mi
-  storageClassName: openebs-cstor-disk
+  storageClassName: cstor-csi-disk
