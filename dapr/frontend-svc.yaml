@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  frontend-svc
+spec:
+  selector:
+    app: frontend
+  type:  NodePort
+  ports:
+  - name:  http
+    port:  5001
+    nodePort:  31111
